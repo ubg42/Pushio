@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity Web Player | Push Royale</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+      /* Global styles */
+      html, body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        width: 100%;
+        height: 100%;
+        /* overflow: hidden; */
+        text-align: center;
+      }
+
+      /* Unity canvas container */
+      /* #unity-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: #000000;
+      } */
+
+      #unity-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute; /* optionnel si tu veux vraiment couvrir */
+        top: 0;
+        left: 0;
+        }   
+    </style>
+  </head>
+  <body>
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <script src="Build/c59245e4fd9907c47825e37a88c30d64.loader.js"></script>
+    <script>
+      (function() {
+        // Set up Unity instance and make it responsive
+        const canvas = document.querySelector("#unity-canvas");
+
+        // Function to resize the canvas dynamically
+        function resizeCanvas() {
+        // V1
+        //   const aspectRatio = 800 / 600;
+        //   const windowAspectRatio = window.innerWidth / window.innerHeight;
+
+        //   if (windowAspectRatio > aspectRatio) {
+        //     // Window is wider than the game's aspect ratio, adjust width
+        //     canvas.style.width = (window.innerHeight * aspectRatio) + "px";
+        //     canvas.style.height = "100%";
+        //   } else {
+        //     // Window is taller than the game's aspect ratio, adjust height
+        //     canvas.style.width = "100%";
+        //     canvas.style.height = (window.innerWidth / aspectRatio) + "px";
+        //   }
+
+        //   canvas.style.position = "absolute";
+        //   canvas.style.top = "50%";
+        //   canvas.style.left = "50%";
+        //   canvas.style.transform = "translate(-50%, -50%)";
+
+        // V2 seulement si le css #unity-cavnas ne fonctionne pas tout seul
+        // canvas.width = canvas.clientWidth;
+        // canvas.height = canvas.clientHeight;
+        }
+
+        // Listen for window resize events
+        window.addEventListener("resize", resizeCanvas);
+
+        // Mobile-specific settings
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          const meta = document.createElement('meta');
+          meta.name = 'viewport';
+          meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+          document.getElementsByTagName('head')[0].appendChild(meta);
+        }
+
+        // Create Unity instance
+        createUnityInstance(canvas, {
+          arguments: [],
+          dataUrl: "Build/5e3e44bb24705447517cb9dc479c8553.data",
+          frameworkUrl: "Build/a517a82cea24bb274013f7a27af763fa.framework.js",
+          codeUrl: "Build/2b13adae44d6d8ec6fdaa3fd38a9d8be.wasm",
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "Mao Games",
+          productName: "Push Royale",
+          productVersion: "0.1-PUBLISHER_GAMEDISTRIBUTION",
+        }).then(() => {
+          // Trigger canvas resize after Unity is initialized
+          resizeCanvas();
+        }).catch((error) => {
+          console.error("Unity failed to load:", error);
+        });
+
+        // Initial canvas size adjustment
+        resizeCanvas();
+      })();
+    </script>
+  </body>
+</html>
